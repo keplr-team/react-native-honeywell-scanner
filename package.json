@@ -17,6 +17,9 @@
     "android",
     "index.js"
   ],
+  "devDependencies": {
+    "react-native": "^0.62.2"
+  },
   "license": "ISC",
   "private": false
 }

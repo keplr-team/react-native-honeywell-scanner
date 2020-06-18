@@ -8,3 +8,5 @@ android/.idea/
 local.properties
 build
 .gradle
+node_modules/
+android/.DS_store
