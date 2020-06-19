@@ -44,7 +44,6 @@ repositories {
 
 dependencies {
     //noinspection GradleDynamicVersion
-    implementation fileTree(dir: "libs", include: ["*.jar", "*.aar"])
     implementation "com.facebook.react:react-native:${safeExtGet("reactNative", "+")}"
     implementation project(path: ':DataCollection') // from node_modules
 }
