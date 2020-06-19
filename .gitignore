@@ -2,8 +2,11 @@
 android/.project
 android/.classpath
 android/bin
-.idea
+android/.idea/
+.idea/
 *.iml
 local.properties
 build
 .gradle
+node_modules/
+android/.DS_store

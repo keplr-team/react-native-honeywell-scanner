@@ -28,6 +28,7 @@ import com.honeywell.aidc.AidcManager.CreatedCallback;
 import com.honeywell.aidc.BarcodeFailureEvent;
 import com.honeywell.aidc.BarcodeReadEvent;
 import com.honeywell.aidc.BarcodeReader;
+import com.honeywell.aidc.InvalidScannerNameException;
 import com.honeywell.aidc.ScannerUnavailableException;
 
 @SuppressWarnings("unused")
@@ -73,6 +74,8 @@ public class HoneywellScannerModule extends ReactContextBaseJavaModule implement
         if (D) Log.d(TAG, "HONEYWELLSCANNER - Barcode scan read");
         WritableMap params = Arguments.createMap();
         params.putString("data", barcodeReadEvent.getBarcodeData());
+        params.putString("aimId", barcodeReadEvent.getAimId());
+        params.putString("codeId", barcodeReadEvent.getCodeId());
         sendEvent(BARCODE_READ_SUCCESS, params);
     }
 
@@ -91,16 +94,20 @@ public class HoneywellScannerModule extends ReactContextBaseJavaModule implement
             @Override
             public void onCreated(AidcManager aidcManager) {
                 manager = aidcManager;
-                reader = manager.createBarcodeReader();
-                if(reader != null){
-                    reader.addBarcodeListener(HoneywellScannerModule.this);
-                    try {
-                        reader.claim();
-                        promise.resolve(true);
-                    } catch (ScannerUnavailableException e) {
-                        promise.resolve(false);
-                        e.printStackTrace();
+                try {
+                    reader = manager.createBarcodeReader();
+                    if (reader != null) {
+                        reader.addBarcodeListener(HoneywellScannerModule.this);
+                        try {
+                            reader.claim();
+                            promise.resolve(true);
+                        } catch (ScannerUnavailableException e) {
+                            promise.resolve(false);
+                            e.printStackTrace();
+                        }
                     }
+                } catch (InvalidScannerNameException e) {
+                    e.printStackTrace();
                 }
             }
         });
